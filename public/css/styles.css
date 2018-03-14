@@ -36,10 +36,12 @@ li {
 	margin: 0;
 }
 
-li:hover {
+button.toggle-complete:hover {
     text-shadow: 1px 0 0 currentColor;
+    background: green;
 }
 
-button {
-    margin-left: 10px;
+button.delete:hover {
+    text-shadow: 1px 0 currentColor;
+    background: red;
 }

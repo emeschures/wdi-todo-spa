@@ -27,8 +27,16 @@
     var httpClient = axios.create()
 
     function appendTodo(todo) {
+      // if(todo.completed) {
+      //   var liClass = "completed"
+      // } else {
+      //   var liClass =""
+      // }
+
+      var liClass = todo.completed ? "completed : ""
+      
       $list.append(`
-          <li id="${todo._id}">
+          <li id="${todo._id}" class="${liClass}">
           <span>${todo.body}</span>
           <button class="toggle-complete">Mark Complete</button>
           <button class="delete">Delete</button>
@@ -62,7 +70,11 @@
     })
 
     $list.on('click', '.delete', function() {
-      console.log("Clicked...")
+      var todoId = $(this).parent().attr('id')
+      httpClient({ method: 'delete', url: `api/todos/${todoId}` }).then((serverResponse) => {
+        console.log(serverResponse.data)
+        $("#" + todoId).remove()
+      })
     })
 
      $list.on('click', '.toggle-complete', function() {
