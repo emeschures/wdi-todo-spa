@@ -3,7 +3,10 @@ const
   app = express(),
   mongoose = require('mongoose'),
   logger = require('morgan'),
-  bodyParser = require('body-parser')
+  bodyParser = require('body-parser'),
+
+  Todo = require('./models/Todo.js'),
+
   PORT = 3000
 
 mongoose.connect('mongodb://localhost/todo-spa', (err) => {
@@ -18,11 +21,34 @@ app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/public/index.html`)
 })
 
-// The back-end
-// 1. Build your Todo model in './models/Todo.js'
-// 2. Build your 5 Todo CRUD routes here.
-//    the "update" route should toggle a Todo's 'completed' Boolean
-// 3. Test all of your routes in postman (they only need to send and receive JSON)
+app.get('/api/todos', (req, res) => {
+  Todo.find({}, (err, allDemTodos) => {
+    res.json(allDemTodos)
+  })
+})
+
+app.post('/api/todos', (req, res) => {
+  Todo.create(req.body, (err, brandNewTodo) => {
+    if(err) return res.json({ success: false }) 
+    res.json({ success: true, message: "todo created.", todo: brandNewTodo })
+  })
+})
+
+app.delete('/api/todos/:id', (req, res) => {
+  Todo.findByIdAndRemove(req.params.id, (err, deletedTodo) => {
+    if(err) return res.json({ success: false })
+    res.json({ success: true, message: "todo deleted." })
+  })
+})
+
+app.patch('/api/todos/:id', (req, res) => {
+  Todo.findById(req.params.id, (err, thatTodo) => {
+    thatTodo.completed = !thatTodo.completed
+    thatTodo.save((err, updatedTodo) => {
+      res.json({ success: true, message: "todo updated", todo: updatedTodo })
+    })
+  })
+})
 
 app.listen(PORT, (err) => {
   console.log(err || `Server running on port ${PORT}.`)
