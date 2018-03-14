@@ -8,29 +8,57 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <!-- Axios -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="/css/styles.css">
   <title>To-Do SPA</title>
 </head>
 <body>
   <h1>To-Do SPA</h1>
-
-
+    
+    <input id="todo-input" type="text" placeholder="New to-do item" />
+    <button id="add-todo-btn">Add Todo</button>
 
     <ul id="list"></ul>
   <script>
     var $list = $('#list')
-
+    var $addTodoBtn = $('#add-todo-btn')
+    var $input = $('#todo-input')
     // your code:
     var httpClient = axios.create()
+    
+    
+    // WHEN PAGE LOADS, GRAB ALL TODOS
     httpClient({ url: '/api/todos' }).then((serverResponse) => {
       console.log(serverResponse.data)
       serverResponse.data.forEach((todo) => {
         $list.append(`
-          <li>
+          <li id="${todo._id}">
           <span>${todo.body}</span>
-          <button>Mark Complete</button>
-          <button>Delete</button>
+          <button class="toggle-complete">Mark Complete</button>
+          <button class="delete">Delete</button>
           </li>
         `)
+      })
+    })
+
+    // WHEN CREATE BUTTON IS CLICKED, SEND POST REQUEST:
+    $addTodoBtn.on('click', () => {
+      const options = {
+        url: '/api/todos',
+        method: 'post',
+        data: { body: $input.val() }
+      }
+      httpClient(options).then((serverResponse) => {
+        console.log(serverResponse.data)
+        var todo = serverResponse.data.todo
+        $list.append(`
+          <li id="${todo._id}">
+          <span>${todo.body}</span>
+          <button class="toggle-complete">Mark Complete</button>
+          <button class="delete">Delete</button>
+          </li>
+        `)
+        // clear the input field after posting
+        $input.val('')
       })
     })
     
