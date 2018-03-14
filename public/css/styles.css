@@ -45,3 +45,11 @@ button.delete:hover {
     text-shadow: 1px 0 currentColor;
     background: red;
 }
+
+li.completed span {
+    text-decoration: line-through;
+}
+
+#list button {
+    float: right;
+}

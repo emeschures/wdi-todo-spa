@@ -14,9 +14,10 @@
 </head>
 <body>
   <h1>To-Do SPA</h1>
-    
-    <input id="todo-input" type="text" placeholder="New to-do item" />
-    <button id="add-todo-btn">Add Todo</button>
+    <div id="todo-form">
+      <input id="todo-input" type="text" placeholder="New to-do item" />
+      <button id="add-todo-btn">Add Todo</button>
+    </div>
 
     <ul id="list"></ul>
   <script>
@@ -27,13 +28,7 @@
     var httpClient = axios.create()
 
     function appendTodo(todo) {
-      // if(todo.completed) {
-      //   var liClass = "completed"
-      // } else {
-      //   var liClass =""
-      // }
-
-      var liClass = todo.completed ? "completed : ""
+      var liClass = todo.completed ? 'completed' : ""
       
       $list.append(`
           <li id="${todo._id}" class="${liClass}">
@@ -42,6 +37,8 @@
           <button class="delete">Delete</button>
           </li>
         `)
+
+        $('li').last().hide().slideDown()
     } 
     
     
@@ -73,23 +70,19 @@
       var todoId = $(this).parent().attr('id')
       httpClient({ method: 'delete', url: `api/todos/${todoId}` }).then((serverResponse) => {
         console.log(serverResponse.data)
-        $("#" + todoId).remove()
+        $("#" + todoId).slideUp(500, function() {
+          $(this).remove()
+        })
       })
     })
-
-     $list.on('click', '.toggle-complete', function() {
-      console.log("Clicked...")
+    
+    $list.on('click', '.toggle-complete', function() {
+      var todoId = $(this).parent().attr('id')
+      httpClient({ method: 'patch', url: `api/todos/${todoId}` }).then((serverResponse) => {
+        console.log(serverResponse.data)
+        $("#" + todoId).toggleClass('completed')
+      })
     })
-    
-    // The front-end
-    // 1. When a user goes to localhost:3000, they'll be served this html file. This script should immediately attempt to load all Todo items, and display them in <li> tags within a <ul>. Each <li> will have a <span> that contains the todo body, and buttons to toggle complete and delete.
-    
-    // 2. Create a text field and button that allows a user to submit a new todo item with a post request. When this client app receives confirmation from the server that a todo item was saved, append or prepend the new item to the <ul> 
-    
-    // 3. Using jQuery's event delegation, make all todo item toggle-complete and delete items clickable, regardless of whether or not those items exist on the page now or are created in the future. 
-    // More info: https://learn.jquery.com/events/event-delegation/
-
-    // 4. Once there are event listeners for toggle-complete and delete, make those buttons send an HTTP request with axios, PATCH and DELETE respectively. 
   </script>
 </body>
 </html>
