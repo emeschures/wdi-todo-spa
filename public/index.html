@@ -12,17 +12,25 @@
 </head>
 <body>
   <h1>To-Do SPA</h1>
-    <ul id="list">
-    </ul>
+
+
+
+    <ul id="list"></ul>
   <script>
-var $list = $('#list')
+    var $list = $('#list')
 
     // your code:
     var httpClient = axios.create()
     httpClient({ url: '/api/todos' }).then((serverResponse) => {
       console.log(serverResponse.data)
       serverResponse.data.forEach((todo) => {
-        $list.append(`<li>${todo.body}</li>`)
+        $list.append(`
+          <li>
+          <span>${todo.body}</span>
+          <button>Mark Complete</button>
+          <button>Delete</button>
+          </li>
+        `)
       })
     })
     
