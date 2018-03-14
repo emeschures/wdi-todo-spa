@@ -1,5 +1,5 @@
 html {
-    font-family: "Avenir Next", Helevetica, sans-serif;
+    font-family: 'Poiret One', cursive;
     text-align: center;
 }
 
@@ -37,7 +37,7 @@ li {
 }
 
 li:hover {
-    text-decoration-color: aqua; 
+    text-shadow: 1px 0 0 currentColor;
 }
 
 button {

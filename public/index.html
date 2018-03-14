@@ -9,6 +9,7 @@
   <!-- Axios -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
   <title>To-Do SPA</title>
 </head>
 <body>
@@ -52,7 +53,7 @@
         var todo = serverResponse.data.todo
         $list.append(`
           <li id="${todo._id}">
-          <span>${todo.body}</span>
+          <span id="complete">${todo.body}</span>
           <button class="toggle-complete">Mark Complete</button>
           <button class="delete">Delete</button>
           </li>
