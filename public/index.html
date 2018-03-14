@@ -60,6 +60,14 @@
         $input.val('')
       })
     })
+
+    $list.on('click', '.delete', function() {
+      console.log("Clicked...")
+    })
+
+     $list.on('click', '.toggle-complete', function() {
+      console.log("Clicked...")
+    })
     
     // The front-end
     // 1. When a user goes to localhost:3000, they'll be served this html file. This script should immediately attempt to load all Todo items, and display them in <li> tags within a <ul>. Each <li> will have a <span> that contains the todo body, and buttons to toggle complete and delete.
