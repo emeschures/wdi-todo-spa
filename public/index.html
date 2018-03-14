@@ -12,10 +12,19 @@
 </head>
 <body>
   <h1>To-Do SPA</h1>
-
+    <ul id="list">
+    </ul>
   <script>
+var $list = $('#list')
+
     // your code:
     var httpClient = axios.create()
+    httpClient({ url: '/api/todos' }).then((serverResponse) => {
+      console.log(serverResponse.data)
+      serverResponse.data.forEach((todo) => {
+        $list.append(`<li>${todo.body}</li>`)
+      })
+    })
     
     // The front-end
     // 1. When a user goes to localhost:3000, they'll be served this html file. This script should immediately attempt to load all Todo items, and display them in <li> tags within a <ul>. Each <li> will have a <span> that contains the todo body, and buttons to toggle complete and delete.
