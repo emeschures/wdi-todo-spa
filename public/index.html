@@ -25,19 +25,23 @@
     var $input = $('#todo-input')
     // your code:
     var httpClient = axios.create()
-    
-    
-    // WHEN PAGE LOADS, GRAB ALL TODOS
-    httpClient({ url: '/api/todos' }).then((serverResponse) => {
-      console.log(serverResponse.data)
-      serverResponse.data.forEach((todo) => {
-        $list.append(`
+
+    function appendTodo(todo) {
+      $list.append(`
           <li id="${todo._id}">
           <span>${todo.body}</span>
           <button class="toggle-complete">Mark Complete</button>
           <button class="delete">Delete</button>
           </li>
         `)
+    } 
+    
+    
+    // WHEN PAGE LOADS, GRAB ALL TODOS
+    httpClient({ url: '/api/todos' }).then((serverResponse) => {
+      console.log(serverResponse.data)
+      serverResponse.data.forEach((todo) => {
+        appendTodo(todo)
       })
     })
 
@@ -51,13 +55,7 @@
       httpClient(options).then((serverResponse) => {
         console.log(serverResponse.data)
         var todo = serverResponse.data.todo
-        $list.append(`
-          <li id="${todo._id}">
-          <span id="complete">${todo.body}</span>
-          <button class="toggle-complete">Mark Complete</button>
-          <button class="delete">Delete</button>
-          </li>
-        `)
+        appendTodo(todo)
         // clear the input field after posting
         $input.val('')
       })
